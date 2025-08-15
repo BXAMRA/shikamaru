@@ -195,11 +195,11 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="task-card-footer">
           <div class="task-card-actions ms-auto">
+          <button class="btn btn-sm btn-outline-warning delete-task-btn me-2" title="Delete Task" type="button">
+            REMOVE TASK
+          </button>
             <button class="btn btn-sm btn-outline-success add-progress-btn" data-task-id="${task.id}" type="button">
-              + PROGRESS
-            </button>
-            <button class="btn btn-sm btn-outline-danger delete-task-btn" title="Delete Task" type="button">
-              <i class="bi bi-trash"></i> Delete
+              ADD PROGRESS
             </button>
           </div>
         </div>
