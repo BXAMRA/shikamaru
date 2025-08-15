@@ -133,6 +133,10 @@ body {
   height: 20px;
 }
 
+.app-logo {
+  height: 27px;
+}
+
 /* Drag and Drop Project Styles */
 .project-item.dragging {
   opacity: 0.5;
