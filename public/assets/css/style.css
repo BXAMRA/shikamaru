@@ -1,0 +1,576 @@
+body {
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  background-color: #1a1a1a;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar-main-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.sidebar-header,
+.sidebar-actions {
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+}
+
+.sidebar-header h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0;
+}
+
+.version-tag {
+  font-size: 0.75rem;
+  font-weight: normal;
+  color: #6c757d;
+}
+
+#sidebar-drop-zone {
+  overflow-y: auto;
+}
+
+#sidebar-drop-zone.drag-over-root {
+  background-color: #0d6efd1a;
+  border: 2px dashed #0d6efd;
+}
+
+.project-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
+  margin-bottom: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid transparent;
+}
+
+.project-item-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.project-item-name {
+  font-weight: 500;
+}
+
+.project-item-description {
+  font-size: 0.85em;
+  color: #6c757d;
+  margin-top: 0.25rem;
+  width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  white-space: normal;
+}
+
+.project-item:hover {
+  background-color: #2c2c2c;
+}
+
+.project-item.active {
+  background-color: #0d6efd20;
+}
+
+.project-item.active .project-item-name {
+  font-weight: bold;
+}
+
+.project-item.active .project-item-description {
+  color: #adb5bd;
+}
+
+.sidebar-footer {
+  padding: 0.4rem;
+  border-top: 1px solid #333;
+  font-size: 1.1em;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.dev-logo {
+  height: 20px;
+}
+
+/* Drag and Drop Project Styles */
+.project-item.dragging {
+  opacity: 0.5;
+}
+
+.project-item.drag-over {
+  border: 2px dashed #0d6efd;
+  background-color: #0d6efd20;
+}
+
+.add-subproject-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.project-item:hover .add-subproject-btn {
+  opacity: 1;
+}
+
+/* --- Main Content --- */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#no-project-selected-view {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#project-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#project-content-view {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#project-title {
+  font-size: 1.5rem;
+}
+
+#project-description-wrapper {
+  margin-bottom: 0.5rem;
+}
+
+#project-description-display {
+  cursor: pointer;
+  margin-bottom: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+  padding-right: 1rem;
+}
+
+#project-description-display.collapsed {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+  line-clamp: 7;
+}
+
+#expand-description-btn {
+  text-align: left;
+}
+
+#expand-description-btn i {
+  transition: transform 0.2s ease-in-out;
+}
+
+#expand-description-btn.expanded i {
+  transform: rotate(180deg);
+}
+
+.editable-description {
+  width: 100%;
+  background-color: #343a40;
+  border: 1px solid #0d6efd;
+  border-radius: 5px;
+  color: #fff;
+  padding: 0.5rem;
+  max-width: 80vw;
+  line-height: 1.5;
+  max-height: 18em;
+  overflow-y: auto;
+}
+
+/* Sub-project View */
+#sub-project-list-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 0 1rem 1rem 1rem;
+  overflow-y: auto;
+  flex-grow: 1;
+  min-height: 0;
+  align-content: start;
+}
+
+.subproject-tile {
+  background-color: #212529;
+  border: 1px solid #333;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.subproject-tile:hover {
+  background-color: #343a40;
+}
+
+.subproject-tile h5 {
+  margin-bottom: 0.25rem;
+}
+
+.subproject-tile-description {
+  font-size: 0.9em;
+  color: #adb5bd;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  word-break: break-word;
+}
+
+.more-btn-container {
+  text-align: right;
+  margin-top: 0.5rem;
+}
+
+#project-actions-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#task-board-container {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  flex-grow: 1;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.task-section {
+  width: 40%;
+  min-width: 40%;
+  max-width: 40%;
+  flex-shrink: 0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-section.planned {
+  background-color: #212529;
+}
+
+.task-section.in-progress {
+  background-color: #252a2e;
+}
+
+.task-section.under-review {
+  background-color: #2c2a30;
+}
+
+.task-section.finished {
+  background-color: #262f2a;
+}
+
+.task-section.suggested {
+  background-color: #2f2d27;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-task-to-section-btn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  background-color: #343a40;
+  border-color: #495057;
+}
+
+.task-list {
+  padding: 0.75rem;
+  overflow-y: auto;
+  flex-grow: 1;
+  min-height: 100px;
+}
+
+/* Task Card & Progress Styles */
+.task-card {
+  background-color: #343a40;
+  border: 1px solid #495057;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  cursor: grab;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-card-main-content {
+  flex-grow: 1;
+}
+
+.task-title-text,
+.progress-note-text {
+  cursor: text;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.task-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.task-card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.progress-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 1rem;
+  margin-bottom: 0;
+  font-size: 0.9em;
+}
+
+.progress-item {
+  padding: 0.5rem 0;
+}
+
+.progress-item:not(:first-child) {
+  border-top: 1px solid #2c2c2c;
+}
+
+.progress-date {
+  font-size: 0.85em;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+.delete-task-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.task-card:hover .delete-task-btn {
+  opacity: 1;
+}
+
+/* Editable Field Styles */
+.project-breadcrumb-link {
+  color: #adb5bd;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.project-breadcrumb-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.project-breadcrumb-separator {
+  color: #888;
+  margin: 0 0.5rem;
+  font-weight: normal;
+}
+
+.editable-project-title {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  border-radius: 4px;
+}
+
+.editable-project-title:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #0d6efd;
+  background-color: #343a40;
+}
+
+.editable-task-title,
+.editable-progress-note {
+  width: 100%;
+  background-color: #495057;
+  border: 1px solid #0d6efd;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-family: inherit;
+}
+
+.editable-task-title {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+  overflow: hidden;
+}
+
+.editable-progress-note {
+  font-style: italic;
+  font-size: 0.9em;
+  resize: vertical;
+}
+
+/* Modal Styles */
+/* NEW: Style for the add task textarea */
+#addTaskModal textarea {
+  resize: vertical;
+}
+
+#descriptionModal .modal-dialog {
+  max-width: 50vw;
+}
+
+#descriptionModal .modal-body {
+  white-space: pre-wrap;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+#deletion-tree-container {
+  background-color: #212529;
+  border-radius: 5px;
+  padding: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+#deletion-tree-container ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+#deletion-tree-container li {
+  padding: 0.25rem 0;
+}
+
+#deletion-tree-container .deleted-project-name {
+  font-weight: bold;
+  color: #ff8c8c;
+}
+
+#project-name-to-delete {
+  color: #ffc107;
+}
+
+/* --- Mobile Optimizations --- */
+#sidebar-toggle-btn {
+  display: none;
+}
+
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
+#sidebar-overlay.active {
+  display: block;
+}
+
+@media (max-width: 992px) {
+  #sidebar-toggle-btn {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1050;
+    transform: translateX(-100%);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  #sub-project-list-container {
+    grid-template-columns: 1fr;
+  }
+
+  #task-board-container {
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .task-section {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  #project-description-display.collapsed {
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+  }
+}

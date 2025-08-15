@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shikamaru</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.css">
+  <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-main-content">
+        <div class="sidebar-header">
+          <h3>Shikamaru <span class="version-tag">v1.0.0</span></h3>
+        </div>
+        <div class="sidebar-actions p-2"><button class="btn btn-primary w-100" id="add-project-btn"
+            title="Add New Top-Level Project"><i class="bi bi-plus-lg"></i>New Project</button></div>
+        <div id="sidebar-drop-zone" class="p-2 flex-grow-1">
+          <div id="project-list-container"></div>
+        </div>
+      </div>
+      <footer class="sidebar-footer"><span>App developed by </span><img src="assets/images/dev_logo_mono.png"
+          alt="Developer Logo" class="dev-logo"></footer>
+    </aside>
+    <main class="main-content">
+      <div id="project-header" class="p-4" style="display: none;">
+        <div class="d-flex align-items-center"><button class="btn btn-outline-secondary me-3 d-lg-none"
+            id="sidebar-toggle-btn"><i class="bi bi-list"></i></button>
+          <h1 id="project-title" class="d-flex align-items-center flex-wrap"></h1>
+        </div>
+      </div>
+      <div id="no-project-selected-view" class="p-4">
+        <h2 class="text-body-secondary fw-light">Select a Project</h2>
+        <p class="text-body-secondary">Choose a project from the sidebar to get started.</p>
+      </div>
+      <div id="project-content-view" style="display: none;">
+        <div id="project-description-wrapper" class="px-4">
+          <p id="project-description-display" class="text-body-secondary"></p><button id="expand-description-btn"
+            class="btn btn-sm btn-link d-none p-0 mt-1 text-decoration-none text-secondary"><i
+              class="bi bi-chevron-down"></i></button>
+        </div>
+        <div id="project-actions-container" class="px-4 pb-3"><button class="btn btn-sm btn-outline-danger"
+            id="delete-project-btn" title="Delete Project" style="display: none;"><i class="bi bi-trash"></i>Delete
+            Project</button></div>
+        <div id="sub-project-list-container"></div>
+        <div id="task-board-container">
+          <div class="task-section planned">
+            <div class="section-title"><span>Planned</span><button class="btn btn-sm add-task-to-section-btn"
+                data-status="planned">+ TASK</button></div>
+            <div class="task-list" id="planned" data-status="planned"></div>
+          </div>
+          <div class="task-section in-progress">
+            <div class="section-title"><span>In Progress</span><button class="btn btn-sm add-task-to-section-btn"
+                data-status="in-progress">+ TASK</button></div>
+            <div class="task-list" id="in-progress" data-status="in-progress"></div>
+          </div>
+          <div class="task-section under-review">
+            <div class="section-title"><span>Under Review</span><button class="btn btn-sm add-task-to-section-btn"
+                data-status="under-review">+ TASK</button></div>
+            <div class="task-list" id="under-review" data-status="under-review"></div>
+          </div>
+          <div class="task-section finished">
+            <div class="section-title"><span>Finished</span><button class="btn btn-sm add-task-to-section-btn"
+                data-status="finished">+ TASK</button></div>
+            <div class="task-list" id="finished" data-status="finished"></div>
+          </div>
+          <div class="task-section suggested">
+            <div class="section-title"><span>Suggested</span><button class="btn btn-sm add-task-to-section-btn"
+                data-status="suggested">+ TASK</button></div>
+            <div class="task-list" id="suggested" data-status="suggested"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebar-overlay"></div>
+  <div class="modal fade" id="addProjectModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProjectModalLabel">Add New Project</h5><button type="button" class="btn-close"
+            data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addProjectForm">
+            <div class="mb-3"><label for="projectName" class="form-label">Project Name</label><input type="text"
+                class="form-control" id="projectName" required></div>
+            <div class="mb-3"><label for="projectDescription" class="form-label">Description</label><textarea
+                class="form-control" id="projectDescription" rows="3"></textarea></div>
+          </form>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary"
+            form="addProjectForm">Create Project</button></div>
+      </div>
+    </div>
+  </div>
+  <!-- UPDATED: Add Task Modal now uses a textarea -->
+  <div class="modal fade" id="addTaskModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Task</h5><button type="button" class="btn-close"
+            data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addTaskForm">
+            <div class="mb-3">
+              <label for="taskTitle" class="form-label">Task Title</label>
+              <textarea class="form-control" id="taskTitle" rows="3" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary"
+            form="addTaskForm">Create Task</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="addProgressModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Progress Update</h5><button type="button" class="btn-close"
+            data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addProgressForm">
+            <div class="mb-3"><label for="progressNote" class="form-label">Progress Note</label><textarea
+                class="form-control" id="progressNote" rows="4" required></textarea></div>
+          </form>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary"
+            form="addProgressForm">Save Progress</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="descriptionModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="descriptionModalLabel">Project Description</h5><button type="button"
+            class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="descriptionModalBody"></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="deleteProjectModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Deletion</h5><button type="button" class="btn-close"
+            data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>You are about to permanently delete the following project and all its sub-projects:</p>
+          <div id="deletion-tree-container"></div>
+          <hr>
+          <p>To confirm, please type the name of the project you are deleting (<strong
+              id="project-name-to-delete"></strong>) in the box below.</p><input type="text" class="form-control"
+            id="delete-confirmation-input" autocomplete="off">
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-danger" id="confirm-delete-btn"
+            disabled>Confirm Delete</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="deleteTaskModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Task Deletion</h5><button type="button" class="btn-close"
+            data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to permanently delete this task?</p>
+          <p class="text-body-secondary"><strong id="task-title-to-delete"></strong></p>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-danger"
+            id="confirm-delete-task-btn">Confirm Delete</button></div>
+      </div>
+    </div>
+  </div>
+  <script src="./assets/js/bootstrap.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+
+</html>
