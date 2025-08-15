@@ -16,7 +16,16 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateX(-100%);
   transition: transform 0.3s ease-in-out;
+  z-index: 1050;
+}
+
+.sidebar.open {
+  transform: translateX(0);
 }
 
 .sidebar-main-content {
@@ -32,7 +41,7 @@ body {
 }
 
 .sidebar-header {
-  padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+  padding: 1rem 0.5rem 0.5rem 1rem;
 }
 
 .sidebar-header h3 {
@@ -277,6 +286,7 @@ body {
   justify-content: flex-end;
 }
 
+/* Task board: horizontal scroll with fixed 400px columns */
 #task-board-container {
   display: flex;
   flex-direction: row;
@@ -287,9 +297,9 @@ body {
 }
 
 .task-section {
-  width: 40%;
-  min-width: 40%;
-  max-width: 40%;
+  width: 400px;
+  min-width: 400px;
+  max-width: 400px;
   flex-shrink: 0;
   border-radius: 8px;
   display: flex;
@@ -330,8 +340,6 @@ body {
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.2rem 0.6rem;
-  background-color: #343a40;
-  border-color: #495057;
 }
 
 .task-list {
@@ -367,14 +375,14 @@ body {
 
 .task-card-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-top: 1rem;
 }
 
 .task-card-actions {
   display: flex;
-  gap: 0.5rem;
+  margin-left: auto;
 }
 
 .progress-list {
@@ -393,15 +401,15 @@ body {
   border-top: 1px solid #2c2c2c;
 }
 
+/* Hide timestamps under progress notes */
 .progress-date {
-  font-size: 0.85em;
-  color: #6c757d;
-  margin-top: 0.25rem;
+  display: none;
 }
 
 .delete-task-btn {
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
+  opacity: 1;
+  transition: none;
+
 }
 
 .task-card:hover .delete-task-btn {
@@ -470,7 +478,6 @@ body {
 }
 
 /* Modal Styles */
-/* NEW: Style for the add task textarea */
 #addTaskModal textarea {
   resize: vertical;
 }
@@ -515,7 +522,7 @@ body {
 
 /* --- Mobile Optimizations --- */
 #sidebar-toggle-btn {
-  display: none;
+  display: inline-block;
 }
 
 #sidebar-overlay {
@@ -525,7 +532,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.294);
   z-index: 1040;
 }
 
@@ -534,24 +541,6 @@ body {
 }
 
 @media (max-width: 992px) {
-  #sidebar-toggle-btn {
-    display: block;
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 1050;
-    transform: translateX(-100%);
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
-  }
-
   #sub-project-list-container {
     grid-template-columns: 1fr;
   }
